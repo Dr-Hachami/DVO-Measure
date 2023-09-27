@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+    <title>DVO Measure</title>
+</head>
+<body>
+    <h1>DVO Measure App</h1>
+    <p style="margin: 15px;">This web app assists in estimating the DVO (Vertical Dimension of oclusion) 
+        using techniques that rely on patient facial measurements to determine the DVO.
+         With this app, dentists can simplify their work by simply capturing a picture of the patient's 
+         face and allowing the app to utilize computer vision to identify landmarks and calculate the DVO.
+          The formula employed in this process involves measuring the distance from the internal 
+        canthus to the labial commissure, approximating the DVO.
+    </p>
+    <img src="{{ url_for('static', filename='face0.jpg') }}" alt="face Measurements" width="300" height="300">
+    <h1>Upload an Image</h1>
+    <form action="/process_image" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="submit">Measure the DVO</button>
+    </form>
+
+    <h2>Uploaded Image:</h2>
+    <div id="image-preview">
+        <img id="uploaded-image" src="" alt="Uploaded Image" width="300" height="300">
+    </div>
+
+    <h2>Processing Results:</h2>
+    <div id="results">
+        <!-- Results will be displayed here using JavaScript -->
+    </div>
+
+    <script>
+        const fileInput = document.querySelector('input[type="file"]');
+        const uploadedImage = document.getElementById('uploaded-image');
+        const important = document.getElementById('important');
+
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const objectURL = URL.createObjectURL(file);
+                uploadedImage.src = objectURL;
+                uploadedImage.style.display = 'block';
+            } else {
+                uploadedImage.src = '';
+                uploadedImage.style.display = 'none';
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/process_image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const results = await response.json();
+                    displayResults(results);
+                } else {
+                    console.error('Error processing the image');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            resultsDiv.innerHTML+=`<p>DVO  State: 
+                <strong style="color:${results['DVO  State'] == "Good DVO"?"green":"red"};">${results['DVO  State']}</strong></p>`;
+            resultsDiv.innerHTML+=`<p style="color: green;">Suggested Therapeutic DVO: 
+                <strong>${results['Suggested Therapeutic DVO'].toFixed(2) +" mm"}</strong></p>`;
+            resultsDiv.innerHTML+=`<p id="important">The results may exhibit a slight variance from the actual measurement, 
+            with an estimated error rate ranging between +/-(2-6) millimeters.</p>`;
+        }
+    </script>
+</body>
+</html>

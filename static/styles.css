@@ -1,0 +1,95 @@
+/* Reset some default styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Center headings */
+h1, h2 {
+    text-align: center;
+}
+
+/* Style the container */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style paragraphs */
+p {
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* Style the image */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Style the form */
+form {
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+/* Style the file input */
+input[type="file"] {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Style the submit button */
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the image preview */
+#image-preview {
+    text-align: center;
+    margin: 20px auto;
+}
+
+/* Style the uploaded image */
+#uploaded-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Style the processing results container */
+#results {
+    text-align: center;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the important message */
+#important {
+    margin-top: 10px;
+    color: #d9534f; /* Red color for emphasis */
+    font-weight: bold;
+}
