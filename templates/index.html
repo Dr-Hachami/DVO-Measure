@@ -4,11 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-
     <title>DVO Measure</title>
 </head>
 <body>
-    <h1>DVO Measure App</h1>
+    <h1 style="background-color: #007bff; margin: 0;padding: 10px; color: white;">DVO Measure App</h1>
+    <h2>Upload a Face Image</h2>
+    <form action="/process_image" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <div id="pre_img" style="display: none;">
+            <h2>Uploaded Image:</h2>
+            <div id="image-preview">
+                <img id="uploaded-image" src="" alt="Uploaded Image" width="300" height="300">
+            </div>
+        </div>
+        <button type="submit">Measure the DVO</button>
+    </form>
+    <div id="loading-spinner" style="display: none;"> 
+    <h2 >Processing Results</h2>
+    <div class="loader loader--style3" title="2">
+        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+        <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+          <animateTransform attributeType="xml"
+            attributeName="transform"
+            type="rotate"
+            from="0 25 25"
+            to="360 25 25"
+            dur="0.6s"
+            repeatCount="indefinite"/>
+          </path>
+        </svg>
+      </div>
+    </div>
+    <div id="processed_results" style="display: none;">
+        <h2>Results:</h2>
+        <div id="results">
+            <!-- Results will be displayed here using JavaScript -->
+        </div>
+    </div>
+    <img src="{{ url_for('static', filename='face0.jpg') }}" alt="face Measurements" width="300" height="300">
     <p style="margin: 15px;">This web app assists in estimating the DVO (Vertical Dimension of oclusion) 
         using techniques that rely on patient facial measurements to determine the DVO.
          With this app, dentists can simplify their work by simply capturing a picture of the patient's 
@@ -16,27 +50,17 @@
           The formula employed in this process involves measuring the distance from the internal 
         canthus to the labial commissure, approximating the DVO.
     </p>
-    <img src="{{ url_for('static', filename='face0.jpg') }}" alt="face Measurements" width="300" height="300">
-    <h1>Upload an Image</h1>
-    <form action="/process_image" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <button type="submit">Measure the DVO</button>
-    </form>
-
-    <h2>Uploaded Image:</h2>
-    <div id="image-preview">
-        <img id="uploaded-image" src="" alt="Uploaded Image" width="300" height="300">
-    </div>
-
-    <h2>Processing Results:</h2>
-    <div id="results">
-        <!-- Results will be displayed here using JavaScript -->
-    </div>
+    <footer >
+        <p><small>&copy; 2023 Yassine Hachami. All rights reserved.</small></p>
+      </footer>
 
     <script>
         const fileInput = document.querySelector('input[type="file"]');
         const uploadedImage = document.getElementById('uploaded-image');
         const important = document.getElementById('important');
+        const preImg =  document.getElementById('pre_img');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const processedResults = document.getElementById('processed_results');
 
         fileInput.addEventListener('change', () => {
             const file = fileInput.files[0];
@@ -44,6 +68,7 @@
                 const objectURL = URL.createObjectURL(file);
                 uploadedImage.src = objectURL;
                 uploadedImage.style.display = 'block';
+                preImg.style.display = 'block';
             } else {
                 uploadedImage.src = '';
                 uploadedImage.style.display = 'none';
@@ -52,6 +77,8 @@
 
         document.querySelector('form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            processedResults.style.display = 'none';
+            loadingSpinner.style.display = 'block';
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
@@ -69,6 +96,9 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
+            }finally{
+                loadingSpinner.style.display = 'none';
+                processedResults.style.display = 'block';
             }
         });
 
