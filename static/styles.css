@@ -91,5 +91,38 @@ button[type="submit"] {
 #important {
     margin-top: 10px;
     color: #d9534f; /* Red color for emphasis */
-    font-weight: bold;
+    /* font-weight: bold; */
 }
+
+/* footer section */
+footer {
+    margin: 0;
+    padding: 20px;
+    background-color: black;
+    color: #fff;
+    /* border-radius: 5px; */
+}
+footer p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* loading spinner */
+.loader{
+    margin: 0 0 2em;
+    height: 100px;
+    width: 20%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    /* display: inline-block; */
+    vertical-align: top;
+  }
+  
+  /*
+    Set the color of the icon
+  */
+  svg path,
+  svg rect{
+    fill: #007bff;
+  }
