@@ -78,7 +78,7 @@
             resultsDiv.innerHTML+=`<p>DVO  State: 
                 <strong style="color:${results['DVO  State'] == "Good DVO"?"green":"red"};">${results['DVO  State']}</strong></p>`;
             resultsDiv.innerHTML+=`<p style="color: green;">Suggested Therapeutic DVO: 
-                <strong>${results['Suggested Therapeutic DVO'].toFixed(2) +" mm"}</strong></p>`;
+                <strong>${results['Suggested Therapeutic DVO'] +" mm"}</strong></p>`;
             resultsDiv.innerHTML+=`<p id="important">The results may exhibit a slight variance from the actual measurement, 
             with an estimated error rate ranging between +/-(2-6) millimeters.</p>`;
         }
