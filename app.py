@@ -82,17 +82,19 @@ def process_image():
         #     f"line (angle interne de l’œil – commissure labiale) in mm is equal to: {(y6-y5)*cof*(0.059):.2f} mm")
 
     DVO_state = (y6-y5)*cof*(0.059)
-    if DVO_state-7 <= (y2 - y1) * cof*(0.059) <= DVO_state+7:
+    if DVO_state-5 <= (y2 - y1) * cof*(0.059) <= DVO_state+7:
         DVO_state = "Good DVO"
     elif (y2 - y1) * cof*(0.059) < DVO_state-7:
         DVO_state = "DVO is decreased"
     elif (y2 - y1) * cof*(0.059) > DVO_state+7:
         DVO_state = "DVO is increased"
+    DVO_therapeutic = (y6 - y5) * cof*(0.059)
+    DVO_therapeutic = DVO_therapeutic - 6
 
     # Return the results as JSON
     results = {
         'DVO  State': DVO_state,
-        'Suggested Therapeutic DVO': (y6 - y5) * cof*(0.059),
+        'Suggested Therapeutic DVO': DVO_therapeutic,
         # Add more measurements if needed...
     }
 
